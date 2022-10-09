@@ -1,0 +1,64 @@
+schema {
+  query: Query
+  mutation: Mutations
+}
+
+type Integration {
+  name: String!
+  time: NaiveDateTime!
+}
+
+type Mutations {
+  createUser(username: String!, name: String!, email: String!): User!
+  deleteUser(token: String!): User!
+  createTransaction(token: String!, transaction: NewTransaction!): Transaction!
+}
+
+"""
+NaiveDate
+"""
+scalar NaiveDate
+
+"""
+NaiveDateTime
+"""
+scalar NaiveDateTime
+
+input NewTransaction {
+  entryDate: NaiveDate!
+  entryAccountCode: String
+  exitAccountCode: String
+  amount: Float!
+  description: String
+}
+
+type Query {
+  apiVersion: String!
+  transactions(token: String!): [Transaction!]!
+  me(token: String!): User!
+  token(email: String!, loginCode: Int!): String!
+}
+
+type Transaction {
+  id: Uuid!
+  relatedUser: Uuid!
+  entryDate: NaiveDate!
+  entryAccountCode: String
+  exitAccountCode: String
+  amount: Float!
+  description: String
+}
+
+type User {
+  id: Uuid!
+  username: String!
+  name: String!
+  email: String!
+  integrations: [Integration!]!
+  payday: Int
+}
+
+"""
+Uuid
+"""
+scalar Uuid
