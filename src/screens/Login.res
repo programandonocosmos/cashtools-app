@@ -1,6 +1,15 @@
 open RescriptNativeBase
 open UserDomain
 let s = React.string
+
+module Mutation = %relay(`
+  mutation LoginMutation ($username: String!, $name: String!, $email: String!) {
+	createUser(username: $username, name: $name, email: $email) {
+    id
+  }
+  }
+`)
+
 @react.component
 let make = (~navigation as _, ~route as _) => {
   let (email, setEmail) = React.useState(_ => "")
