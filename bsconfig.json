@@ -18,6 +18,9 @@
     "rescript-nativebase",
     "rescript-react-navigation",
     "rescript-react-native",
-    "@rescript/react"
-  ]
+    "@rescript/react",
+    "bs-fetch",
+    "rescript-relay"
+  ],
+  "ppx-flags": ["rescript-relay/ppx"]
 }
