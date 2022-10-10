@@ -2,11 +2,9 @@ open RescriptNativeBase
 open UserDomain
 let s = React.string
 
-module Mutation = %relay(`
-  mutation LoginMutation ($username: String!, $name: String!, $email: String!) {
-	createUser(username: $username, name: $name, email: $email) {
-    id
-  }
+module Query = %relay(`
+  query LoginQuery ($email: String!, $loginCode: Int!) {
+  	token(email: $email, loginCode: $loginCode)
   }
 `)
 
@@ -14,6 +12,14 @@ module Mutation = %relay(`
 let make = (~navigation as _, ~route as _) => {
   let (email, setEmail) = React.useState(_ => "")
   let (_state, dispatch) = Context.AuthContext.use()
+
+  let result = Query.use(
+    ~variables={
+      email,
+      loginCode: 1234,
+    },
+    (),
+  )
 
   <Box
     justifyContent="space-between"
