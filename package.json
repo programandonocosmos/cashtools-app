@@ -13,10 +13,13 @@
     "relay:watch": "rescript-relay-compiler --watch"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/stack": "^6.3.0",
     "@rescript-bindings/expo": "^40.3.2",
+    "@rescript-react-native/async-storage": "^1.6.3",
     "@rescript/react": "^0.10.3",
+    "@ryyppy/rescript-promise": "^2.1.0",
     "bs-fetch": "^0.6.2",
     "expo": "~46.0.9",
     "expo-status-bar": "~1.4.0",
