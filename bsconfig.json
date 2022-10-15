@@ -20,7 +20,9 @@
     "rescript-react-native",
     "@rescript/react",
     "bs-fetch",
-    "rescript-relay"
+    "rescript-relay",
+    "@rescript-react-native/async-storage",
+    "@ryyppy/rescript-promise"
   ],
   "ppx-flags": ["rescript-relay/ppx"]
 }
