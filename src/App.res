@@ -1,13 +1,17 @@
-open UserDomain
 @react.component
+open ReactNativeSafeAreaContext
 let make = _ => {
-  let contextVal = React.useReducer(AuthReducer.reducer, LoggedIn(dummyUser))
+  let contextVal = AuthReducer.use()
 
-  <Context.AuthContext.Provider value=contextVal>
-    <RescriptRelay.Context.Provider environment=RelayEnv.environment>
-      <Navigation.RootStackScreen />
-    </RescriptRelay.Context.Provider>
-  </Context.AuthContext.Provider>
+  <ThemeProvider>
+    <Context.AuthContext.Provider value=contextVal>
+      <SafeAreaProvider>
+        <RescriptRelay.Context.Provider environment=RelayEnv.environment>
+          <Navigation.RootStackScreen />
+        </RescriptRelay.Context.Provider>
+      </SafeAreaProvider>
+    </Context.AuthContext.Provider>
+  </ThemeProvider>
 }
 
 let default = make
