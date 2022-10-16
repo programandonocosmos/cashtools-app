@@ -1,6 +1,4 @@
 open RescriptNativeBase
-open UserDomain
-open ReactNavigation
 open Utils
 
 module Mutation = %relay(`
@@ -27,10 +25,15 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
   let (mutate, isMutating) = Mutation.use()
 
   let onPressNext = _ =>
-    mutate(~variables={email, username, name}, ~onCompleted=(_, _) => goToInsertion(), ())->ignore
+    mutate(
+      ~variables={email, username, name},
+      ~onCompleted=(_, _) => goToInsertion(),
+      ~onError=err => Js.log(Js.Json.stringifyAny(err.message)),
+      (),
+    )->ignore
+
   <Box
     justifyContent="space-between"
-    // padding="24px"
     alignItems="center"
     flex="1"
     variant="container"
@@ -44,23 +47,14 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
       keyboardType=#emailAddress
     />
     <Input
-    // variant={#filled}
       value=email
       autoCapitalize=#none
       onChangeText={e => setEmail(_ => e)}
-      // color="white"
       placeholder="Email"
       keyboardType=#emailAddress
     />
-    // <CContainer width="100%" justifyContent="flex-end" />
     <Box width="100%" justifyContent="flex-end">
-      <Button
-        title="advance"
-        alignSelf="flex-end"
-        maxW="100px"
-        size=#md
-        // onPress={ _ => ()}
-        onPress={onPressNext}>
+      <Button title="advance" alignSelf="flex-end" maxW="100px" size=#md onPress={onPressNext}>
         {(isMutating ? "..." : "Avançar")->s}
       </Button>
     </Box>
