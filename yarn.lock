@@ -2245,6 +2245,14 @@
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.6.tgz#fa700318528db93f05144b1be4b691b9c1dd1abe"
   integrity sha512-pNJ8R9JMga6SXOw6wGVN0tjmE6vegwPmJBL45SEMX2fqTfAk2ykDnlJHodRpHpAgsv0DaI8qX76z3A+aqKSU0w==
 
+"@react-navigation/native-stack@^6.9.1":
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native-stack/-/native-stack-6.9.1.tgz#6013300e4cd0b33e242aa18593e4dff7db2ab3d1"
+  integrity sha512-aOuJP97ge6NRz8wH6sDKfLTfdygGmraYh0apKrrVbGvMnflbPX4kpjQiAQcUPUpMeas0betH/Su8QubNL8HEkg==
+  dependencies:
+    "@react-navigation/elements" "^1.3.6"
+    warn-once "^0.1.0"
+
 "@react-navigation/native@^6.0.13":
   version "6.0.13"
   resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-6.0.13.tgz#ec504120e193ea6a7f24ffa765a1338be5a3160a"
@@ -2636,6 +2644,11 @@
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/@rescript-react-native/async-storage/-/async-storage-1.6.3.tgz#f47e95b3c5fb7b8e5ad867372f6de02c299a0861"
   integrity sha512-3GMvq2/kjPYg6fB9QjYj0r4OqmsNGM0cYn0MWb7FYMiBUij/A9l624QJfCfO2m5aCmJACvUlWMVdZjLwhVLSqw==
+
+"@rescript-react-native/safe-area-context@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@rescript-react-native/safe-area-context/-/safe-area-context-4.0.0.tgz#aadd11314e445420f075d5c9c7dd4348c9b7ea96"
+  integrity sha512-jGB231kXHTlZ669bADOyFdKA5MpKTxo2uZ/ngtn0yRzH3eN4qmmHdofPBFxc693bKcuXinrSBm62rc1w6tw/KQ==
 
 "@rescript/react@^0.10.3":
   version "0.10.3"
@@ -6598,6 +6611,11 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-freeze@^1.0.0:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-freeze/-/react-freeze-1.0.3.tgz#5e3ca90e682fed1d73a7cb50c2c7402b3e85618d"
+  integrity sha512-ZnXwLQnGzrDpHBHiC56TXFXvmolPeMjTn1UOm610M4EXGzbEDR7oOIyS2ZiItgbs6eZc4oU/a0hpk8PrcKvv5g==
+
 "react-is@^16.12.0 || ^17.0.0 || ^18.0.0":
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
@@ -6652,10 +6670,18 @@ react-native-keyboard-aware-scroll-view@^0.9.5:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-react-native-safe-area-context@4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.3.1.tgz#5cf97b25b395e0d09bc1f828920cd7da0d792ade"
-  integrity sha512-cEr7fknJCToTrSyDCVNg0GRdRMhyLeQa2NZwVCuzEQcWedOw/59ExomjmzCE4rxrKXs6OJbyfNtFRNyewDaHuA==
+react-native-safe-area-context@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.4.1.tgz#239c60b8a9a80eac70a38a822b04c0f1d15ffc01"
+  integrity sha512-N9XTjiuD73ZpVlejHrUWIFZc+6Z14co1K/p1IFMkImU7+avD69F3y+lhkqA2hN/+vljdZrBSiOwXPkuo43nFQA==
+
+react-native-screens@^3.18.2:
+  version "3.18.2"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.18.2.tgz#d7ab2d145258d3db9fa630fa5379dc4474117866"
+  integrity sha512-ANUEuvMUlsYJ1QKukEhzhfrvOUO9BVH9Nzg+6eWxpn3cfD/O83yPBOF8Mx6x5H/2+sMy+VS5x/chWOOo/U7QJw==
+  dependencies:
+    react-freeze "^1.0.0"
+    warn-once "^0.1.0"
 
 react-native-svg@12.3.0:
   version "12.3.0"
@@ -6888,10 +6914,10 @@ requires-port@^1.0.0:
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==
 
-rescript-nativebase@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/rescript-nativebase/-/rescript-nativebase-0.0.5.tgz#804db6d5c25018ca78da84122cb56dd16100909b"
-  integrity sha512-nnjpJZt/U18Yk5n/c6KwdhOIicvYjpTxYsOtEoUy69ObJwiIA32I12OatQM+E4sBw/3rVEvXQDvLZKMnK4X9QQ==
+rescript-nativebase@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/rescript-nativebase/-/rescript-nativebase-0.0.7.tgz#e2d6fb1998056caba9e1d0e71e75f0935506c9e5"
+  integrity sha512-mdFdPj1iv27S/JYZxTEdngP1MHS9Occq0jBnqNqUH1Vz7010SbA9aC6vAC/FoBWD92MhLZ9KJyxEdL/rDzubGA==
   dependencies:
     "@rescript/react" "^0.10.3"
     "@storybook/addon-react-native-web" "^0.0.18"

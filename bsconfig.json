@@ -22,7 +22,8 @@
     "bs-fetch",
     "rescript-relay",
     "@rescript-react-native/async-storage",
-    "@ryyppy/rescript-promise"
+    "@ryyppy/rescript-promise",
+    "@rescript-react-native/safe-area-context"
   ],
   "ppx-flags": ["rescript-relay/ppx"]
 }
