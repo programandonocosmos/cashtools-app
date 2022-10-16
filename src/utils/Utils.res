@@ -5,3 +5,4 @@ let safelyParseJSON = json =>
   }
 
 let decodeJSStr = maybeStr => Js.nullToOption(maybeStr)->Belt.Option.flatMap(safelyParseJSON)
+let s = React.string
