@@ -4,6 +4,7 @@ schema {
 }
 
 type Integration {
+  id: Uuid!
   name: String!
   time: NaiveDateTime!
 }
@@ -12,16 +13,14 @@ type Mutations {
   createUser(username: String!, name: String!, email: String!): User!
   deleteUser(token: String!): User!
   createTransaction(token: String!, transaction: NewTransaction!): Transaction!
+  createIntegration(token: String!, name: String!, time: NaiveDateTime!): Integration!
+  deleteIntegration(token: String!, id: Uuid!): Integration!
 }
 
-"""
-NaiveDate
-"""
+"""NaiveDate"""
 scalar NaiveDate
 
-"""
-NaiveDateTime
-"""
+"""NaiveDateTime"""
 scalar NaiveDateTime
 
 input NewTransaction {
@@ -58,7 +57,6 @@ type User {
   payday: Int
 }
 
-"""
-Uuid
-"""
+"""Uuid"""
 scalar Uuid
+
