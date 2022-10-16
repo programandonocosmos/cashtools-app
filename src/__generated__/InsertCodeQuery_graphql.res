@@ -1,4 +1,4 @@
-/* @sourceLoc Login.res */
+/* @sourceLoc InsertCode.res */
 /* @generated */
 %%raw("/* @generated */")
 module Types = {
@@ -134,7 +134,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "LoginQuery",
+    "name": "InsertCodeQuery",
     "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
@@ -143,16 +143,16 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "LoginQuery",
+    "name": "InsertCodeQuery",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "0cecae236563cbb55fda087db392b7b4",
+    "cacheID": "ad098960555f26b36e9f9cdf4a9ca709",
     "id": null,
     "metadata": {},
-    "name": "LoginQuery",
+    "name": "InsertCodeQuery",
     "operationKind": "query",
-    "text": "query LoginQuery(\n  $email: String!\n  $loginCode: Int!\n) {\n  token(email: $email, loginCode: $loginCode)\n}\n"
+    "text": "query InsertCodeQuery(\n  $email: String!\n  $loginCode: Int!\n) {\n  token(email: $email, loginCode: $loginCode)\n}\n"
   }
 };
 })() `)
