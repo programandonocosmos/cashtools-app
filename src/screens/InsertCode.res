@@ -4,6 +4,9 @@ module Query = %relay(`
     token(email: $email, loginCode: $loginCode)
   }
 `)
+open InsertCodeQuery_graphql.Types
+open Belt
+
 @react.component
 let make = (~navigation, ~route: Navigators.MainStack.route) => {
   let (login, _, _) = Hooks.useAuth()
@@ -16,26 +19,30 @@ let make = (~navigation, ~route: Navigators.MainStack.route) => {
   }
 
   let gotoHome = _ => navigation->Navigators.MainStack.Navigation.navigate("Home")
+
+  let onQuerySucceed = res =>
+    switch res {
+    | Ok({token}) => {
+        login({username, name, token})
+        gotoHome()
+      }
+
+    | Error(e) => Js.log(e)
+    }
+
   let onClickNext = _ => {
-    switch Belt.Int.fromString(code) {
+    switch Int.fromString(code) {
     | Some(loginCode) =>
       Query.fetch(
         ~environment=RelayEnv.environment,
         ~variables={loginCode, email},
-        ~onResult=res =>
-          switch res {
-          | Ok({token}) => {
-              login({username, name, token})
-              gotoHome()
-            }
-
-          | Error(e) => Js.log(e)
-          },
+        ~onResult=onQuerySucceed,
         (),
       )
     | None => ()
     }->ignore
   }
+
   <Box justifyContent="space-between" variant="container">
     <Heading size=#"2xl">
       {j`Digite o código
