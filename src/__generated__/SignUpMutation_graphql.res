@@ -155,21 +155,21 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
+      (v0/*: any*/),
       (v2/*: any*/),
-      (v1/*: any*/),
-      (v0/*: any*/)
+      (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "SignUpMutation",
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "b2bf735e5bda9b146e9f27c75d4fcd28",
+    "cacheID": "72f7190fcc766bb9a2c1c7863a14bef8",
     "id": null,
     "metadata": {},
     "name": "SignUpMutation",
     "operationKind": "mutation",
-    "text": "mutation SignUpMutation(\n  $username: String!\n  $name: String!\n  $email: String!\n) {\n  createUser(username: $username, name: $name, email: $email) {\n    id\n  }\n}\n"
+    "text": "mutation SignUpMutation(\n  $email: String!\n  $username: String!\n  $name: String!\n) {\n  createUser(email: $email, username: $username, name: $name) {\n    id\n  }\n}\n"
   }
 };
 })() `)
