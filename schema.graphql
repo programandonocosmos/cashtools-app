@@ -11,6 +11,7 @@ type Integration {
 
 type Mutations {
   createUser(username: String!, name: String!, email: String!): User!
+  sendLoginCode(email: String!): String!
   deleteUser(token: String!): User!
   createTransaction(token: String!, transaction: NewTransaction!): Transaction!
   createIntegration(token: String!, name: String!, time: NaiveDateTime!): Integration!
