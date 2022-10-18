@@ -6,6 +6,8 @@ let bgColor = "#181818"
 let background = ReactNative.Style.viewStyle(~flex=1., ~backgroundColor=bgColor, ())
 
 open Js.Dict
+
+let stacksProps = fromArray([("space", "2")])
 let base = {
   components: {
     \"Button": {
@@ -36,7 +38,10 @@ let base = {
       ]),
     },
     \"VStack": {
-      defaultProps: fromArray([("spacing", "2"), ("padding", "2")]),
+      defaultProps: stacksProps,
+    },
+    \"HStack": {
+      defaultProps: stacksProps,
     },
     \"Heading": {
       baseStyle: _ => {

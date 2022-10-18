@@ -12,6 +12,7 @@ module MainStackScreen = {
       | UserDomain.LoggedOut =>
         <>
           <Screen name="Login" component=Login.make />
+          <Screen name="SignUp" component=SignUp.make />
           <Screen name="InsertCode" component=InsertCode.make />
         </>
       }}
