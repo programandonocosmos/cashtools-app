@@ -9,7 +9,7 @@ let dumpState = (key, state) =>
 let restoreState = key => getItem(key)->Promise.thenResolve(decodeJSStr)
 
 let persistReducer = (key, reducer, state, action) => {
-  let result = reducer(state, action)
-  let _ = dumpState(key, result)
-  result
+  let newState = reducer(state, action)
+  let _ = dumpState(key, newState)
+  newState
 }

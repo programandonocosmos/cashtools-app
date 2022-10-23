@@ -15,7 +15,7 @@ let fetchQuery: RescriptRelay.Network.fetchFunctionPromise = (
 ) => {
   open Fetch
   fetchWithInit(
-    "http://192.168.1.187:8080/graphql",
+    Env.apiUrl,
     RequestInit.make(
       ~method_=Post,
       ~body=Js.Dict.fromList(list{
