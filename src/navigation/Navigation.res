@@ -1,15 +1,16 @@
 open ReactNavigation
 open Navigators
+open UserDomain
 module MainStackScreen = {
   include MainStack
   @react.component
   let make = (~navigation as _, ~route as _) => {
-    let (state, _dispatch) = Context.AuthContext.use()
+    let (_login, _logout, state) = Hooks.useAuth()
 
     <Navigator screenOptions={_optionsProps => options(~headerShown=false, ())}>
       {switch state {
-      | UserDomain.LoggedIn(_) => <Screen name="Home" component=Home.make />
-      | UserDomain.LoggedOut =>
+      | Auth.LoggedIn(_) => <Screen name="Home" component=Home.make />
+      | Auth.LoggedOut =>
         <>
           <Screen name="Login" component=Login.make />
           <Screen name="SignUp" component=SignUp.make />

@@ -1,13 +1,14 @@
 open UserDomain
 open Belt
 
-let initialState = LoggedOut
+let initialState = Auth.LoggedOut
 
-type action = Login(userInfo) | Logout | Hydratate(UserDomain.authStates)
+type action = Login(userInfo) | Logout | Hydratate(Auth.states)
 
 let dummyDispatch = (_: action) => ()
 
-let reducer = (_state: UserDomain.authStates, action) => {
+let reducer = (_state: Auth.states, action) => {
+  open Auth
   switch action {
   | Login(user) => LoggedIn(user)
   | Logout => LoggedOut
@@ -15,7 +16,7 @@ let reducer = (_state: UserDomain.authStates, action) => {
   }
 }
 
-let ppState = (state: UserDomain.authStates) => {
+let ppState = (state: Auth.states) => {
   switch state {
   | LoggedIn(user) => "Logged in as " ++ Js.Json.serializeExn(user)
   | LoggedOut => "Logged out"

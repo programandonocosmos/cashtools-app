@@ -1,6 +1,6 @@
 open UserDomain
 
-type authContext = authStates
+type authContext = Auth.states
 
 module AuthContext = {
   open React
