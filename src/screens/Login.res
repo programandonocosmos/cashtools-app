@@ -14,6 +14,7 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
     navigate(navigation, "InsertCode")
   }
 
+  let (dict, _) = Dict.use()
   let (mutate, isMutating) = Mutation.use()
 
   let onPressNext = _ =>
@@ -44,12 +45,12 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
         variant="ghost"
         onPress={_ => navigation->navigate("SignUp")}
         title="signup">
-        {"Criar conta"->s}
+        {dict["create_account"]->s}
       </Button>
     </VStack>
     <Box width="100%" justifyContent="flex-end">
       <Button title="advance" alignSelf="flex-end" maxW="100px" size=#md onPress={onPressNext}>
-        {(isMutating ? "..." : "Avançar")->s}
+        {(isMutating ? "..." : dict["next"])->s}
       </Button>
     </Box>
   </Box>
