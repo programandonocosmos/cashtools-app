@@ -18,6 +18,12 @@
     "rescript-nativebase",
     "rescript-react-navigation",
     "rescript-react-native",
-    "@rescript/react"
-  ]
+    "@rescript/react",
+    "bs-fetch",
+    "rescript-relay",
+    "@rescript-react-native/async-storage",
+    "@ryyppy/rescript-promise",
+    "@rescript-react-native/safe-area-context"
+  ],
+  "ppx-flags": ["rescript-relay/ppx"]
 }

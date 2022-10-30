@@ -1,25 +1,35 @@
 open ReactNavigation
+open Navigators
+open UserDomain
 module MainStackScreen = {
-  module StakeParams = {
-    type params = {name: string}
-  }
-  include Stack.Make(StakeParams)
+  include MainStack
   @react.component
-  let make = (~navigation as _, ~route as _) =>
-    <Navigator>
-      <Screen name="Login" component=Login.make />
-      <Screen name="Home" component=Home.make />
+  let make = (~navigation as _, ~route as _) => {
+    let (_login, _logout, state) = Hooks.useAuth()
+
+    <Navigator screenOptions={_optionsProps => options(~headerShown=false, ())}>
+      {switch state {
+      | Auth.LoggedIn(_) => <Screen name="Home" component=Home.make />
+      | Auth.LoggedOut =>
+        <>
+          <Screen name="Login" component=Login.make />
+          <Screen name="SignUp" component=SignUp.make />
+          <Screen name="InsertCode" component=InsertCode.make />
+        </>
+      }}
     </Navigator>
+  }
 }
+
 module RootStackScreen = {
-  include Stack.Make({
-    type params = unit
-  })
+  include RootStack
   @react.component
   let make = () =>
-    <Native.NavigationContainer>
-      <Navigator screenOptions={_optionsProps => options(~headerShown=false, ())}>
+    <Native.NavigationContainer theme={ReactNavigation.Native.darkTheme}>
+      <Navigator
+        screenOptions={_optionsProps => options(~headerShown=false, ~presentation=#modal, ())}>
         <Screen name="Stack" component=MainStackScreen.make />
       </Navigator>
     </Native.NavigationContainer>
 }
+// 
