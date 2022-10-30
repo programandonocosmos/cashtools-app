@@ -9,6 +9,7 @@ module Mutation = %relay(`
     }
   }
 `)
+
 @react.component
 let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
   let (email, setEmail) = React.useState(_ => "")
@@ -19,6 +20,7 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
   }
 
   let (mutate, isMutating) = Mutation.use()
+  let (dict, _) = Dict.use()
 
   let onPressNext = _ =>
     mutate(
@@ -36,12 +38,9 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
     background="muted.900">
     <Heading size=#"2xl" color="white"> {"Cash Tools"->s} </Heading>
     <VStack flex="1" width="100%">
-      <Input value=name onChangeText={e => setName(_ => e)} placeholder="Nome" />
+      <Input value=name onChangeText={e => setName(_ => e)} placeholder={dict["name"]} />
       <Input
-        value=username
-        onChangeText={e => setUsername(_ => e)}
-        placeholder="Username"
-        keyboardType=#emailAddress
+        value=username onChangeText={e => setUsername(_ => e)} placeholder={dict["username"]}
       />
       <Input
         value=email
@@ -55,12 +54,12 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
         alignSelf="flex-start"
         onPress={_ => navigation->navigate("Login")}
         title="login">
-        {"Já tenho uma conta"->s}
+        {dict["already_have_account"]->s}
       </Button>
     </VStack>
     <HStack width="100%" justifyContent="flex-end">
       <Button title="advance" alignSelf="flex-end" maxW="100px" size=#md onPress={onPressNext}>
-        {(isMutating ? "..." : "Avançar")->s}
+        {(isMutating ? "..." : dict["next"])->s}
       </Button>
     </HStack>
   </Box>
