@@ -1,4 +1,5 @@
 open RescriptNativeBase
+open Utils
 module Query = %relay(`
   query InsertCodeQuery($email: String!, $loginCode: Int!) {
     token(email: $email, loginCode: $loginCode)
@@ -10,6 +11,8 @@ open Belt
 @react.component
 let make = (~navigation, ~route: Navigators.MainStack.route) => {
   let (login, _, _) = Hooks.useAuth()
+  let (dict, _) = Dict.use()
+
   let (code, setCode) = React.useState(_ => "")
 
   let {email, username, name} = switch route.params {
@@ -44,18 +47,14 @@ let make = (~navigation, ~route: Navigators.MainStack.route) => {
   }
 
   <Box justifyContent="space-between" variant="container">
-    <Heading size=#"2xl">
-      {j`Digite o código
-enviado no 
-seu email`->React.string}
-    </Heading>
+    <Heading size=#"2xl"> {dict["enter_code_email"]->s} </Heading>
     <Input keyboardType=#decimalPad value=code onChangeText={t => setCode(_ => t)} />
     <HStack justifyContent="flex-end" space=2>
       <Button title="back" onPress={_ => navigation->Navigators.MainStack.Navigation.goBack()}>
-        <Text> {`Voltar`->React.string} </Text>
+        <Typography> {dict["back"]} </Typography>
       </Button>
       <Button alignSelf="flex-end" title="logout button" onPress={onClickNext}>
-        <Text> {j`Avançar`->React.string} </Text>
+        <Typography> {dict["next"]} </Typography>
       </Button>
     </HStack>
   </Box>
