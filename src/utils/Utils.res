@@ -6,3 +6,6 @@ let safelyParseJSON = json =>
 
 let decodeJSStr = maybeStr => Js.nullToOption(maybeStr)->Belt.Option.flatMap(safelyParseJSON)
 let s = React.string
+let showRelayErrorMessage = (dict, toast, e:RescriptRelay.mutationError) => toast->RescriptNativeBase.Toast.show({
+  title: dict["unknown_error"]++ e.message,
+})->ignore

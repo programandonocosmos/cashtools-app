@@ -1,7 +1,7 @@
 open RescriptNativeBase
 open Utils
 open Navigators.MainStack.Navigation
-
+open RescriptNativeBase.Toast
 module Mutation = %relay(`
   mutation SignUpMutation($email: String!, $username: String!, $name: String!) {
     createUser(email: $email, username: $username, name: $name) {
@@ -21,12 +21,12 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
 
   let (mutate, isMutating) = Mutation.use()
   let (dict, _) = Dict.use()
-
+  let toast = useToast()
   let onPressNext = _ =>
     mutate(
       ~variables={email, username, name},
       ~onCompleted=(_, _) => goToInsertion(),
-      ~onError=err => Js.log(Js.Json.stringifyAny(err.message)),
+      ~onError=showRelayErrorMessage(dict, toast),
       (),
     )->ignore
 
@@ -37,7 +37,7 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
     variant="container"
     background="muted.900">
     <Heading size=#"2xl" color="white"> {"Cash Tools"->s} </Heading>
-    <VStack flex="1" width="100%">
+    <VStack space=4 width="100%">
       <Input value=name onChangeText={e => setName(_ => e)} placeholder={dict["name"]} />
       <Input
         value=username onChangeText={e => setUsername(_ => e)} placeholder={dict["username"]}
