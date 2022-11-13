@@ -14,6 +14,7 @@ let dict = {
     "username_length_error": "Username must be at least 3 characters long",
     "username": "Username",
     "unknown_error": "Unknown error",
+
     "invalid_code": "Invalid code",
     "invalid_route_params": "Invalid route parameters",
     "failed_to_login": "Failed to login",
