@@ -13,6 +13,8 @@ let dict = {
     "already_have_account": "Already have an account?",
     "username_length_error": "Username must be at least 3 characters long",
     "username": "Username",
+    "unknown_error": "Unknown error",
+    "invalid_code": "Invalid code",
   },
   "br": {
     "login": "Login",
@@ -28,6 +30,8 @@ let dict = {
     "already_have_account": "Já tem uma conta?",
     "username_length_error": "O nome de usuário deve ter pelo menos 3 caracteres",
     "username": "Nome de usuário",
+    "unknown_error": "Erro desconhecido",
+    "invalid_code": "Código inválido",
   },
 }
 
