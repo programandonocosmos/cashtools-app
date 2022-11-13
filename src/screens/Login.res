@@ -1,17 +1,26 @@
 open RescriptNativeBase
 open Navigators.MainStack.Navigation
 open Utils
+open RescriptNativeBase.Toast
+
 module Mutation = %relay(`
   mutation LoginMutation($email: String!) {
     sendLoginCode(email: $email)
   }
 `)
+
 @react.component
 let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
   let (email, setEmail) = React.useState(_ => "")
-
+  let toast = useToast()
   let goToInsertion = _ => {
-    navigate(navigation, "InsertCode")
+    navigateWithParams(
+      navigation,
+      "InsertCode",
+      {
+        email: email,
+      },
+    )
   }
 
   let (dict, _) = Dict.use()
@@ -21,7 +30,7 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
     mutate(
       ~variables={email: email},
       ~onCompleted=(_, _) => goToInsertion(),
-      ~onError=err => Js.log(Js.Json.stringifyAny(err.message)),
+      ~onError=showRelayErrorMessage(dict, toast),
       (),
     )->ignore
 
@@ -39,6 +48,7 @@ let make = (~navigation: ReactNavigation.Core.navigation, ~route as _) => {
         onChangeText={e => setEmail(_ => e)}
         placeholder="Email"
         keyboardType=#emailAddress
+        onSubmitEditing=onPressNext
       />
       <Button
         alignSelf="flex-start"
