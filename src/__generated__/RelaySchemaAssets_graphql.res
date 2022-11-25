@@ -28,6 +28,20 @@ type enum_Order_input = [
 ]
 
 @live
+type enum_typ = private [>
+  | #ADD
+  | #KEEP
+  | #DELETE
+]
+
+@live
+type enum_typ_input = [
+  | #ADD
+  | #KEEP
+  | #DELETE
+]
+
+@live
 type enum_RequiredFieldAction = private [>
   | #NONE
   | #LOG

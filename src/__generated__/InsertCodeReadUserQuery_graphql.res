@@ -1,41 +1,31 @@
-/* @sourceLoc AddAccount.res */
+/* @sourceLoc InsertCode.res */
 /* @generated */
 %%raw("/* @generated */")
 module Types = {
   @@ocaml.warning("-30")
 
-  type rec response_accounts = {
-    @live id: string,
+  type rec response_me = {
+    email: string,
+    name: string,
+    username: string,
   }
   type response = {
-    accounts: array<response_accounts>,
+    me: response_me,
   }
   @live
   type rawResponse = response
   @live
   type variables = {
-    inTrash: bool,
-    isPreAllocation: bool,
-    page: int,
     token: string,
   }
   @live
   type refetchVariables = {
-    inTrash: option<bool>,
-    isPreAllocation: option<bool>,
-    page: option<int>,
     token: option<string>,
   }
   @live let makeRefetchVariables = (
-    ~inTrash=?,
-    ~isPreAllocation=?,
-    ~page=?,
     ~token=?,
     ()
   ): refetchVariables => {
-    inTrash: inTrash,
-    isPreAllocation: isPreAllocation,
-    page: page,
     token: token
   }
 
@@ -96,9 +86,6 @@ module Utils = {
   @@ocaml.warning("-33")
   open Types
   @live @obj external makeVariables: (
-    ~inTrash: bool,
-    ~isPreAllocation: bool,
-    ~page: int,
     ~token: string,
   ) => variables = ""
 
@@ -110,61 +97,47 @@ type operationType = RescriptRelay.queryNode<relayOperationNode>
 
 
 let node: operationType = %raw(json` (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "inTrash"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "isPreAllocation"
-},
-v2 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "page"
-},
-v3 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "token"
-},
-v4 = [
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "token"
+  }
+],
+v1 = [
   {
     "alias": null,
     "args": [
-      {
-        "kind": "Variable",
-        "name": "inTrash",
-        "variableName": "inTrash"
-      },
-      {
-        "kind": "Variable",
-        "name": "isPreAllocation",
-        "variableName": "isPreAllocation"
-      },
-      {
-        "kind": "Variable",
-        "name": "page",
-        "variableName": "page"
-      },
       {
         "kind": "Variable",
         "name": "token",
         "variableName": "token"
       }
     ],
-    "concreteType": "Account",
+    "concreteType": "User",
     "kind": "LinkedField",
-    "name": "accounts",
-    "plural": true,
+    "name": "me",
+    "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "id",
+        "name": "email",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "username",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
         "storageKey": null
       }
     ],
@@ -173,38 +146,28 @@ v4 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/),
-      (v2/*: any*/),
-      (v3/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "AddAccountQuery",
-    "selections": (v4/*: any*/),
+    "name": "InsertCodeReadUserQuery",
+    "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v3/*: any*/),
-      (v2/*: any*/),
-      (v1/*: any*/),
-      (v0/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "AddAccountQuery",
-    "selections": (v4/*: any*/)
+    "name": "InsertCodeReadUserQuery",
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "8272c0b8f7ec6a265874f95ccfc1b58d",
+    "cacheID": "21d51ad4049fa3f7b70f19ae4d821142",
     "id": null,
     "metadata": {},
-    "name": "AddAccountQuery",
+    "name": "InsertCodeReadUserQuery",
     "operationKind": "query",
-    "text": "query AddAccountQuery(\n  $token: String!\n  $page: Int!\n  $isPreAllocation: Boolean!\n  $inTrash: Boolean!\n) {\n  accounts(token: $token, page: $page, isPreAllocation: $isPreAllocation, inTrash: $inTrash) {\n    id\n  }\n}\n"
+    "text": "query InsertCodeReadUserQuery(\n  $token: String!\n) {\n  me(token: $token) {\n    email\n    username\n    name\n  }\n}\n"
   }
 };
 })() `)
