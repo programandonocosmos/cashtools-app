@@ -3,6 +3,34 @@ schema {
   mutation: Mutations
 }
 
+type Account {
+  id: Uuid!
+  time: NaiveDateTime!
+  name: String!
+  description: String
+  balance: Float!
+  preAllocation: PreAllocation
+  earning: Earning
+  isAvailable: Boolean!
+  inTrash: Boolean!
+}
+
+type Earning {
+  rate: Float!
+  index: EarningIndex!
+}
+
+enum EarningIndex {
+  CDI
+  FIXED
+  IPCA
+}
+
+input EarningInput {
+  rate: Float!
+  index: EarningIndex!
+}
+
 type Integration {
   id: Uuid!
   name: String!
@@ -10,6 +38,10 @@ type Integration {
 }
 
 type Mutations {
+  createAccount(token: String!, account: NewAccount!): Account!
+  editAccount(token: String!, id: Uuid!, updatedAccount: UpdatedAccount!): Account!
+  deleteAccount(token: String!, id: Uuid!): Uuid!
+  preAllocate(token: String!, from: Uuid!, to: Uuid!, amount: Float!): PreAllocation!
   createUser(username: String!, name: String!, email: String!): User!
   sendLoginCode(email: String!): String!
   deleteUser(token: String!): User!
@@ -24,6 +56,16 @@ scalar NaiveDate
 """NaiveDateTime"""
 scalar NaiveDateTime
 
+input NewAccount {
+  time: NaiveDateTime!
+  initialBalance: Float!
+  name: String!
+  description: String
+  preAllocation: PreAllocationInput
+  earning: EarningInput
+  isAvailable: Boolean!
+}
+
 input NewTransaction {
   entryDate: NaiveDate!
   entryAccountCode: String
@@ -32,8 +74,25 @@ input NewTransaction {
   description: String
 }
 
+enum Order {
+  ASC
+  DESC
+}
+
+type PreAllocation {
+  amount: Float!
+  accumulative: Boolean!
+}
+
+input PreAllocationInput {
+  amount: Float
+  accumulative: Boolean
+}
+
 type Query {
   apiVersion: String!
+  account(token: String!, id: Uuid!): Account!
+  accounts(token: String!, order: Order, pageSize: Int, page: Int!, isPreAllocation: Boolean!, inTrash: Boolean!, tags: [Uuid!]): [Account!]!
   transactions(token: String!): [Transaction!]!
   me(token: String!): User!
   token(email: String!, loginCode: Int!): String!
@@ -47,6 +106,15 @@ type Transaction {
   exitAccountCode: String
   amount: Float!
   description: String
+}
+
+input UpdatedAccount {
+  name: String
+  description: String
+  preAllocation: PreAllocationInput
+  earning: EarningInput
+  isAvailable: Boolean
+  inTrash: Boolean
 }
 
 type User {
