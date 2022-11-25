@@ -39,21 +39,38 @@ type Integration {
 
 type Mutations {
   createAccount(token: String!, account: NewAccount!): Account!
-  editAccount(token: String!, id: Uuid!, updatedAccount: UpdatedAccount!): Account!
+  editAccount(
+    token: String!
+    id: Uuid!
+    updatedAccount: UpdatedAccount!
+  ): Account!
   deleteAccount(token: String!, id: Uuid!): Uuid!
-  preAllocate(token: String!, from: Uuid!, to: Uuid!, amount: Float!): PreAllocation!
+  preAllocate(
+    token: String!
+    from: Uuid!
+    to: Uuid!
+    amount: Float!
+  ): PreAllocation!
   createUser(username: String!, name: String!, email: String!): User!
   sendLoginCode(email: String!): String!
   deleteUser(token: String!): User!
   createTransaction(token: String!, transaction: NewTransaction!): Transaction!
-  createIntegration(token: String!, name: String!, time: NaiveDateTime!): Integration!
+  createIntegration(
+    token: String!
+    name: String!
+    time: NaiveDateTime!
+  ): Integration!
   deleteIntegration(token: String!, id: Uuid!): Integration!
 }
 
-"""NaiveDate"""
+"""
+NaiveDate
+"""
 scalar NaiveDate
 
-"""NaiveDateTime"""
+"""
+NaiveDateTime
+"""
 scalar NaiveDateTime
 
 input NewAccount {
@@ -92,7 +109,15 @@ input PreAllocationInput {
 type Query {
   apiVersion: String!
   account(token: String!, id: Uuid!): Account!
-  accounts(token: String!, order: Order, pageSize: Int, page: Int!, isPreAllocation: Boolean!, inTrash: Boolean!, tags: [Uuid!]): [Account!]!
+  accounts(
+    token: String!
+    order: Order
+    pageSize: Int
+    page: Int!
+    isPreAllocation: Boolean!
+    inTrash: Boolean!
+    tags: [Uuid!]
+  ): [Account!]!
   transactions(token: String!): [Transaction!]!
   me(token: String!): User!
   token(email: String!, loginCode: Int!): String!
@@ -116,6 +141,11 @@ input UpdatedAccount {
   isAvailable: Boolean
   inTrash: Boolean
 }
+enum typ {
+  ADD
+  KEEP
+  DELETE
+}
 
 type User {
   id: Uuid!
@@ -126,6 +156,7 @@ type User {
   payday: Int
 }
 
-"""Uuid"""
+"""
+Uuid
+"""
 scalar Uuid
-
