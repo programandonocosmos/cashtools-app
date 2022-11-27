@@ -13,7 +13,9 @@ module Types = {
     @live id: string,
   }
   @live
-  type response = {createAccount: response_createAccount}
+  type response = {
+    createAccount: response_createAccount,
+  }
   @live
   type rawResponse = response
   @live
@@ -25,32 +27,45 @@ module Types = {
 
 module Internal = {
   @live
-  let variablesConverter: Js.Dict.t<
-    Js.Dict.t<Js.Dict.t<string>>,
-  > = %raw(json`{"earningInput":{},"preAllocationInput":{},"newAccount":{"preAllocation":{"r":"preAllocationInput"},"earning":{"r":"earningInput"}},"__root":{"account":{"r":"newAccount"}}}`)
+  let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
+    json`{"earningInput":{},"preAllocationInput":{},"newAccount":{"preAllocation":{"r":"preAllocationInput"},"earning":{"r":"earningInput"}},"__root":{"account":{"r":"newAccount"}}}`
+  )
   @live
   let variablesConverterMap = ()
   @live
-  let convertVariables = v =>
-    v->RescriptRelay.convertObj(variablesConverter, variablesConverterMap, Js.undefined)
+  let convertVariables = v => v->RescriptRelay.convertObj(
+    variablesConverter,
+    variablesConverterMap,
+    Js.undefined
+  )
   @live
   type wrapResponseRaw
   @live
-  let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(json`{}`)
+  let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
+    json`{}`
+  )
   @live
   let wrapResponseConverterMap = ()
   @live
-  let convertWrapResponse = v =>
-    v->RescriptRelay.convertObj(wrapResponseConverter, wrapResponseConverterMap, Js.null)
+  let convertWrapResponse = v => v->RescriptRelay.convertObj(
+    wrapResponseConverter,
+    wrapResponseConverterMap,
+    Js.null
+  )
   @live
   type responseRaw
   @live
-  let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(json`{}`)
+  let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
+    json`{}`
+  )
   @live
   let responseConverterMap = ()
   @live
-  let convertResponse = v =>
-    v->RescriptRelay.convertObj(responseConverter, responseConverterMap, Js.undefined)
+  let convertResponse = v => v->RescriptRelay.convertObj(
+    responseConverter,
+    responseConverterMap,
+    Js.undefined
+  )
   type wrapRawResponseRaw = wrapResponseRaw
   @live
   let convertWrapRawResponse = convertWrapResponse
@@ -62,28 +77,21 @@ module Utils = {
   @@ocaml.warning("-33")
   open Types
   @live
-  external earningIndex_toString: RelaySchemaAssets_graphql.enum_EarningIndex => string =
-    "%identity"
+  external earningIndex_toString: RelaySchemaAssets_graphql.enum_EarningIndex => string = "%identity"
   @live
-  external earningIndex_input_toString: RelaySchemaAssets_graphql.enum_EarningIndex_input => string =
-    "%identity"
+  external earningIndex_input_toString: RelaySchemaAssets_graphql.enum_EarningIndex_input => string = "%identity"
   @live
-  let earningIndex_decode = (enum: RelaySchemaAssets_graphql.enum_EarningIndex): option<
-    RelaySchemaAssets_graphql.enum_EarningIndex_input,
-  > => {
+  let earningIndex_decode = (enum: RelaySchemaAssets_graphql.enum_EarningIndex): option<RelaySchemaAssets_graphql.enum_EarningIndex_input> => {
     switch enum {
-    | #...RelaySchemaAssets_graphql.enum_EarningIndex_input as valid => Some(valid)
-    | _ => None
+      | #...RelaySchemaAssets_graphql.enum_EarningIndex_input as valid => Some(valid)
+      | _ => None
     }
   }
   @live
-  let earningIndex_fromString = (str: string): option<
-    RelaySchemaAssets_graphql.enum_EarningIndex_input,
-  > => {
+  let earningIndex_fromString = (str: string): option<RelaySchemaAssets_graphql.enum_EarningIndex_input> => {
     earningIndex_decode(Obj.magic(str))
   }
-  @live @obj
-  external make_newAccount: (
+  @live @obj external make_newAccount: (
     ~description: string=?,
     ~earning: earningInput=?,
     ~initialBalance: float,
@@ -91,18 +99,18 @@ module Utils = {
     ~name: string,
     ~preAllocation: preAllocationInput=?,
     ~time: int,
-    unit,
+    unit
   ) => newAccount = ""
 
-  @live @obj
-  external make_preAllocationInput: (
+
+  @live @obj external make_preAllocationInput: (
     ~accumulative: bool=?,
     ~amount: float=?,
-    unit,
+    unit
   ) => preAllocationInput = ""
 
-  @live @obj
-  external make_earningInput: (
+
+  @live @obj external make_earningInput: (
     ~index: [
       | #CDI
       | #FIXED
@@ -111,11 +119,18 @@ module Utils = {
     ~rate: float,
   ) => earningInput = ""
 
-  @live @obj external makeVariables: (~account: newAccount, ~token: string) => variables = ""
+
+  @live @obj external makeVariables: (
+    ~account: newAccount,
+    ~token: string,
+  ) => variables = ""
+
+
 }
 
 type relayOperationNode
 type operationType = RescriptRelay.mutationNode<relayOperationNode>
+
 
 let node: operationType = %raw(json` (function(){
 var v0 = {
@@ -199,3 +214,5 @@ return {
   }
 };
 })() `)
+
+
