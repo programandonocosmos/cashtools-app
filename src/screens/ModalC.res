@@ -27,7 +27,7 @@ external make: (
   ~alignItems: 'a=?,
   ~alignSelf: 'a=?,
   ~animationPreset: 'a=?,
-  ~avoidKeyboard: 'a=?,
+  ~avoidKeyboard: bool=?,
   ~backdropVisible: 'a=?,
   ~background: 'a=?,
   ~backgroundColor: 'a=?,
