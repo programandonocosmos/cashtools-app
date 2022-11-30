@@ -9,13 +9,13 @@ module Mutation = %relay(`
     }
   }
 `)
-
-let emptyPreallocated: RelaySchemaAssets_graphql.input_PreAllocationInput = {
+open RelaySchemaAssets_graphql
+let emptyPreallocated: input_PreAllocationInput = {
   accumulative: None,
   amount: None,
 }
-let initialState: RelaySchemaAssets_graphql.input_NewAccount = {
-  time: 0,
+let initialState: input_NewAccount = {
+  time: Js.Date.now()->Belt.Float.toInt,
   initialBalance: 0.0,
   name: "",
   description: None,
@@ -56,24 +56,78 @@ let monthlyToAnnualRate = rate =>
   (Js.Math.pow_float(~base=1. +. rate /. 100., ~exp=12.) -. 1.) *. 100.
 let annualToMonthlyRate = rate =>
   (Js.Math.pow_float(~base=1. +. rate /. 100., ~exp=1. /. 12.) -. 1.) *. 100.
+let emptyEarn = {
+  rate: 0.,
+  index: #FIXED,
+}
+
 module Form = {
-  open RelaySchemaAssets_graphql
   @react.component
   let make = (
     ~account: input_NewAccount,
     ~setAccount: (input_NewAccount => input_NewAccount) => unit,
   ) => {
+    // let account = form.values.value
     let (mutate, isMutating) = Mutation.use()
     let (dict, _) = Dict.use()
+
+    let onChangeAvailability = availability =>
+      setAccount(oldAccount => {...oldAccount, isAvailable: availability})
+    let onChangeName = newName => setAccount(oldAccount => {...oldAccount, name: newName})
+    let onChangeInitialBalance = newInitialBalance =>
+      setAccount(oldAccount => {
+        ...oldAccount,
+        initialBalance: newInitialBalance->Belt.Float.fromString->Belt.Option.getWithDefault(0.0),
+      })
+    let onChangePrealloc = isPrealloc =>
+      setAccount(oldAccount => {
+        ...oldAccount,
+        preAllocation: isPrealloc ? Some(emptyPreallocated) : None,
+      })
+    let onChangeIsEarn = willEarn =>
+      setAccount(oldAccount => {
+        ...oldAccount,
+        earning: willEarn ? Some({rate: 0., index: #CDI}) : None,
+      })
+    let onChangeAmount = newAmount =>
+      setAccount(oldAccount => {
+        ...oldAccount,
+        preAllocation: Some({
+          ...oldAccount.preAllocation->Belt.Option.getWithDefault(emptyPreallocated),
+          amount: Belt.Float.fromString(newAmount),
+        }),
+      })
+    let onChangIsAcc = isAcc =>
+      setAccount(oldAccount => {
+        ...oldAccount,
+        preAllocation: Some({
+          ...oldAccount.preAllocation->Belt.Option.getWithDefault(emptyPreallocated),
+          accumulative: Some(isAcc),
+        }),
+      })
+    let onChangeMonthlyRate = newRate =>
+      setAccount(oldAccount => {
+        ...oldAccount,
+        earning: Some({
+          ...oldAccount.earning->Belt.Option.getWithDefault(emptyEarn),
+          rate: newRate->Percentage.ofString,
+        }),
+      })
+    let onChangeYearlyRate = newRate =>
+      setAccount(oldAccount => {
+        ...oldAccount,
+        earning: Some({
+          ...oldAccount.earning->Belt.Option.getWithDefault(emptyEarn),
+          rate: newRate->Percentage.ofString->annualToMonthlyRate,
+        }),
+      })
+
     <VStack flex="1">
       <FormControl.Label> {"Name"->s} </FormControl.Label>
       <Input
       // bg="black"
       // background="black"
-        bgColor="muted.900"
-        variant=#outline
-        value={account.name}
-        onChangeText={newName => setAccount(oldAccount => {...oldAccount, name: newName})}
+        bgColor="muted.900" variant=#outline value={account.name} onChangeText={onChangeName}
       />
       <FormControl.Label> {"Initial Balance"->s} </FormControl.Label>
       <Input
@@ -83,37 +137,13 @@ module Form = {
         variant=#outline
         keyboardType=#numberPad
         value={account.initialBalance->Belt.Float.toString}
-        onChangeText={newInitialBalance =>
-          setAccount(oldAccount => {
-            ...oldAccount,
-            initialBalance: newInitialBalance
-            ->Belt.Float.fromString
-            ->Belt.Option.getWithDefault(0.0),
-          })}
+        onChangeText={onChangeInitialBalance}
       />
       <HStack>
-        <LabeledCheckbox
-          onChange={isPrealloc =>
-            setAccount(oldAccount => {
-              ...oldAccount,
-              preAllocation: isPrealloc ? Some(emptyPreallocated) : None,
-            })}
-          label="Preallocation?"
-        />
-        <LabeledCheckbox
-          label={"Available?"}
-          onChange={availability =>
-            setAccount(oldAccount => {...oldAccount, isAvailable: availability})}
-        />
+        <LabeledCheckbox onChange={onChangePrealloc} label="Preallocation?" />
+        <LabeledCheckbox label={"Available?"} onChange={onChangeAvailability} />
       </HStack>
-      <LabeledCheckbox
-        label={"Earns?"}
-        onChange={willEarn =>
-          setAccount(oldAccount => {
-            ...oldAccount,
-            earning: willEarn ? Some({rate: 0., index: #CDI}) : None,
-          })}
-      />
+      <LabeledCheckbox label={"Earns?"} onChange={onChangeIsEarn} />
       {switch account.preAllocation {
       | None => React.null
       | Some(preallocData) =>
@@ -128,26 +158,9 @@ module Form = {
               bgColor="muted.900"
               variant=#outline
               value={preallocData.amount->Belt.Option.getWithDefault(0.)->Belt.Float.toString}
-              onChangeText={newAmount =>
-                setAccount(oldAccount => {
-                  ...oldAccount,
-                  preAllocation: Some({
-                    ...preallocData,
-                    amount: Belt.Float.fromString(newAmount),
-                  }),
-                })}
+              onChangeText={onChangeAmount}
             />
-            <LabeledCheckbox
-              label={dict["accumulative"]}
-              onChange={isAcc =>
-                setAccount(oldAccount => {
-                  ...oldAccount,
-                  preAllocation: Some({
-                    ...preallocData,
-                    accumulative: Some(isAcc),
-                  }),
-                })}
-            />
+            <LabeledCheckbox label={dict["accumulative"]} onChange={onChangIsAcc} />
           </HStack>
         </>
       }}
@@ -172,14 +185,7 @@ module Form = {
                 }
                 variant=#outline
                 value={earning.rate->Percentage.toString}
-                onChangeText={newRate =>
-                  setAccount(oldAccount => {
-                    ...oldAccount,
-                    earning: Some({
-                      ...earning,
-                      rate: newRate->Percentage.ofString,
-                    }),
-                  })}
+                onChangeText={onChangeMonthlyRate}
               />
             </VStack>
             <VStack flex="1">
@@ -196,14 +202,7 @@ module Form = {
                 }
                 variant=#outline
                 value={earning.rate->monthlyToAnnualRate->Percentage.toString}
-                onChangeText={newRate =>
-                  setAccount(oldAccount => {
-                    ...oldAccount,
-                    earning: Some({
-                      ...earning,
-                      rate: newRate->Percentage.ofString->annualToMonthlyRate,
-                    }),
-                  })}
+                onChangeText={onChangeYearlyRate}
               />
             </VStack>
           </HStack>
@@ -223,17 +222,21 @@ let make = (~navigation, ~route as _) => {
   }
   let (_, _, maybeUserData) = Hooks.useAuth()
   let (listAccountsRef, loadQuery, _disposeQuery) = AccountList.Query.useLoader()
+  let (mutate, isMutating) = Mutation.use()
   // ~variables={
   //   token: (maybeUserData->UserDomain.getUserDataOrDefault).token,
   //   page: 1,
   //   isPreAllocation: false,
   //   inTrash: false,
   // },
+  let token = (maybeUserData->UserDomain.getUserDataOrDefault).token
+  Js.Console.log(token)
+
   React.useEffect0(() => {
     try {
       loadQuery(
         ~variables={
-          token: (maybeUserData->UserDomain.getUserDataOrDefault).token,
+          token,
           page: 1,
           isPreAllocation: false,
           inTrash: false,
@@ -249,7 +252,15 @@ let make = (~navigation, ~route as _) => {
   let onPressAdd = _ => {
     setModalOpen(_ => true)
   }
-
+  let onPressSave = _ => {
+    setModalOpen(_ => false)
+    mutate(
+      ~variables={account, token},
+      ~onError=Js.Console.log,
+      ~onCompleted=(_, _) => (),
+      (),
+    )->ignore
+  }
   <Box justifyContent="space-between" flex="1" padding="4">
     // {ReactNativePopper.ex}
     <Heading size=#"2xl" color="white"> {dict["where_money"]->s} </Heading>
@@ -272,29 +283,25 @@ let make = (~navigation, ~route as _) => {
               }}>
               {"Cancel"->s}
             </Button>
-            <Button
-              title=""
-              onPress={_ => {
-                setModalOpen(_ => false)
-              }}>
-              {"Save"->s}
-            </Button>
+            <Button title="" onPress={onPressSave}> {"Save"->s} </Button>
           </HStack>
         </ModalC.Footer>
       </ModalC.Content>
     </ModalC>
-    <VStack>
-      <RescriptReactErrorBoundary
-        fallback={_ => <Typography> "Error while fetching accounts" </Typography>}>
-        {switch listAccountsRef {
-        | Some(listAccountsRef) => <AccountList queryRef=listAccountsRef />
-        | None => <> </>
-        }}
-      </RescriptReactErrorBoundary>
-    </VStack>
+    // <VStack>
+    //   <RescriptReactErrorBoundary
+    //     fallback={_ => <Typography> "Error while fetching accounts" </Typography>}>
+    //     {switch listAccountsRef {
+    //     | Some(listAccountsRef) => <AccountList queryRef=listAccountsRef />
+    //     | None => <> </>
+    //     }}
+    //   </RescriptReactErrorBoundary>
+    // </VStack>
     <HStack justifyContent="flex-end">
       <Button title="advance" onPress={onPressAdd}> {dict["add_account"]->s} </Button>
-      <Button title="advance" onPress={onPressNext}> {dict["next"]->s} </Button>
+      <Button title="advance" onPress={onPressNext}>
+        {(isMutating ? "..." : dict["next"])->s}
+      </Button>
     </HStack>
   </Box>
 }
