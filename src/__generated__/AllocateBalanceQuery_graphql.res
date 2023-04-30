@@ -1,34 +1,35 @@
-/* @sourceLoc AccountList.res */
+/* @sourceLoc AllocateBalance.res */
 /* @generated */
 %%raw("/* @generated */")
 module Types = {
   @@ocaml.warning("-30")
 
-  type rec response_accounts = {
-    fragmentRefs: RescriptRelay.fragmentRefs<[ | #AccountList_item]>,
+  type rec response_accounts_preAllocation = {
+    amount: float,
+  }
+  and response_accounts = {
+    balance: float,
+    description: option<string>,
+    name: string,
+    preAllocation: option<response_accounts_preAllocation>,
   }
   type response = {
-    @live __id: RescriptRelay.dataId,
     accounts: array<response_accounts>,
   }
   @live
   type rawResponse = response
   @live
   type variables = {
-    inTrash: bool,
     token: string,
   }
   @live
   type refetchVariables = {
-    inTrash: option<bool>,
     token: option<string>,
   }
   @live let makeRefetchVariables = (
-    ~inTrash=?,
     ~token=?,
     ()
   ): refetchVariables => {
-    inTrash: inTrash,
     token: token
   }
 
@@ -51,7 +52,7 @@ module Internal = {
   type wrapResponseRaw
   @live
   let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"accounts":{"f":""}}}`
+    json`{"__root":{"accounts_preAllocation_amount":{"b":""},"accounts_balance":{"b":""}}}`
   )
   @live
   let wrapResponseConverterMap = ()
@@ -65,7 +66,7 @@ module Internal = {
   type responseRaw
   @live
   let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"accounts":{"f":""}}}`
+    json`{"__root":{"accounts_preAllocation_amount":{"b":""},"accounts_balance":{"b":""}}}`
   )
   @live
   let responseConverterMap = ()
@@ -89,7 +90,6 @@ module Utils = {
   @@ocaml.warning("-33")
   open Types
   @live @obj external makeVariables: (
-    ~inTrash: bool,
     ~token: string,
   ) => variables = ""
 
@@ -101,115 +101,105 @@ type operationType = RescriptRelay.queryNode<relayOperationNode>
 
 
 let node: operationType = %raw(json` (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "inTrash"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "token"
-},
-v2 = [
+var v0 = [
   {
-    "kind": "Variable",
-    "name": "inTrash",
-    "variableName": "inTrash"
-  },
-  {
-    "kind": "Variable",
-    "name": "token",
-    "variableName": "token"
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "token"
   }
 ],
-v3 = {
-  "kind": "ClientExtension",
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "__id",
-      "storageKey": null
-    }
-  ]
-};
-return {
-  "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/)
+v1 = [
+  {
+    "alias": null,
+    "args": [
+      {
+        "kind": "Literal",
+        "name": "inTrash",
+        "value": false
+      },
+      {
+        "kind": "Literal",
+        "name": "isPreAllocation",
+        "value": true
+      },
+      {
+        "kind": "Variable",
+        "name": "token",
+        "variableName": "token"
+      }
     ],
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "AccountListQuery",
+    "concreteType": "Account",
+    "kind": "LinkedField",
+    "name": "accounts",
+    "plural": true,
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
-        "concreteType": "Account",
+        "args": null,
+        "kind": "ScalarField",
+        "name": "description",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "balance",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "PreAllocation",
         "kind": "LinkedField",
-        "name": "accounts",
-        "plural": true,
+        "name": "preAllocation",
+        "plural": false,
         "selections": [
           {
+            "alias": null,
             "args": null,
-            "kind": "FragmentSpread",
-            "name": "AccountList_item"
+            "kind": "ScalarField",
+            "name": "amount",
+            "storageKey": null
           }
         ],
         "storageKey": null
-      },
-      (v3/*: any*/)
+      }
     ],
+    "storageKey": null
+  }
+];
+return {
+  "fragment": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "AllocateBalanceQuery",
+    "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v1/*: any*/),
-      (v0/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "AccountListQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v2/*: any*/),
-        "concreteType": "Account",
-        "kind": "LinkedField",
-        "name": "accounts",
-        "plural": true,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "name",
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      },
-      (v3/*: any*/)
-    ]
+    "name": "AllocateBalanceQuery",
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "3ac772e8cde23c029235b2f70d3f5ff4",
+    "cacheID": "0ed5888921ef3fd59020ea754006b061",
     "id": null,
     "metadata": {},
-    "name": "AccountListQuery",
+    "name": "AllocateBalanceQuery",
     "operationKind": "query",
-    "text": "query AccountListQuery(\n  $token: String!\n  $inTrash: Boolean!\n) {\n  accounts(token: $token, inTrash: $inTrash) {\n    ...AccountList_item\n  }\n}\n\nfragment AccountList_item on Account {\n  id\n  name\n}\n"
+    "text": "query AllocateBalanceQuery(\n  $token: String!\n) {\n  accounts(token: $token, isPreAllocation: true, inTrash: false) {\n    description\n    name\n    balance\n    preAllocation {\n      amount\n    }\n  }\n}\n"
   }
 };
 })() `)

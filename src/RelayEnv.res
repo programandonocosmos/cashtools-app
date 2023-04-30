@@ -51,3 +51,20 @@ let environment = RescriptRelay.Environment.make(
   ),
   (),
 )
+module Query = %relay(`
+query RelayEnvCheckQuery {
+  apiVersion
+}
+`)
+Query.fetchPromised(~environment, ~variables=(), ())
+->Promise.thenResolve(response =>
+  Js.Console.log("Starting app... API version: " ++ response.apiVersion)
+)
+->Promise.catch(err =>
+  Js.Console.error(
+    `Error while getting API version:  ${Js.String.make(
+        Js.Json.stringifyAny(err),
+      )}. Server address: ${Env.apiUrl}`,
+  )->Promise.resolve
+)
+->ignore

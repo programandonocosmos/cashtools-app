@@ -9,8 +9,8 @@ module Types = {
   @live type earningInput = RelaySchemaAssets_graphql.input_EarningInput
   @live
   type rec response_createAccount = {
-    balance: float,
     @live id: string,
+    name: string,
   }
   @live
   type response = {
@@ -28,7 +28,7 @@ module Types = {
 module Internal = {
   @live
   let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"earningInput":{},"preAllocationInput":{},"newAccount":{"preAllocation":{"r":"preAllocationInput"},"earning":{"r":"earningInput"}},"__root":{"account":{"r":"newAccount"}}}`
+    json`{"earningInput":{"rate":{"b":""}},"preAllocationInput":{"amount":{"b":""}},"newAccount":{"time":{"b":""},"preAllocation":{"r":"preAllocationInput"},"initialBalance":{"b":""},"earning":{"r":"earningInput"}},"__root":{"account":{"r":"newAccount"}}}`
   )
   @live
   let variablesConverterMap = ()
@@ -42,7 +42,7 @@ module Internal = {
   type wrapResponseRaw
   @live
   let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{}`
+    json`{"__root":{"createAccount_id":{"b":""}}}`
   )
   @live
   let wrapResponseConverterMap = ()
@@ -56,7 +56,7 @@ module Internal = {
   type responseRaw
   @live
   let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{}`
+    json`{"__root":{"createAccount_id":{"b":""}}}`
   )
   @live
   let responseConverterMap = ()
@@ -98,7 +98,7 @@ module Utils = {
     ~isAvailable: bool,
     ~name: string,
     ~preAllocation: preAllocationInput=?,
-    ~time: int,
+    ~time: float,
     unit
   ) => newAccount = ""
 
@@ -174,7 +174,7 @@ v2 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "balance",
+        "name": "name",
         "storageKey": null
       }
     ],
@@ -205,12 +205,12 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "25e6f5958b4b2ad1d9a6e2b25e06c67a",
+    "cacheID": "393b4c4d93d6598500e1ecd8ada93274",
     "id": null,
     "metadata": {},
     "name": "AddAccountMutation",
     "operationKind": "mutation",
-    "text": "mutation AddAccountMutation(\n  $token: String!\n  $account: NewAccount!\n) {\n  createAccount(token: $token, account: $account) {\n    id\n    balance\n  }\n}\n"
+    "text": "mutation AddAccountMutation(\n  $token: String!\n  $account: NewAccount!\n) {\n  createAccount(token: $token, account: $account) {\n    id\n    name\n  }\n}\n"
   }
 };
 })() `)

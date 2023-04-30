@@ -1,25 +1,33 @@
-/* @sourceLoc SignUp.res */
+/* @sourceLoc Home.res */
 /* @generated */
 %%raw("/* @generated */")
 module Types = {
   @@ocaml.warning("-30")
 
-  @live
-  type rec response_createUser = {
+  type rec response_accounts = {
     @live id: string,
+    name: string,
   }
-  @live
   type response = {
-    createUser: response_createUser,
+    accounts: array<response_accounts>,
   }
   @live
   type rawResponse = response
   @live
   type variables = {
-    email: string,
-    name: string,
-    username: string,
+    token: string,
   }
+  @live
+  type refetchVariables = {
+    token: option<string>,
+  }
+  @live let makeRefetchVariables = (
+    ~token=?,
+    ()
+  ): refetchVariables => {
+    token: token
+  }
+
 }
 
 module Internal = {
@@ -39,7 +47,7 @@ module Internal = {
   type wrapResponseRaw
   @live
   let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"createUser_id":{"b":""}}}`
+    json`{"__root":{"accounts_id":{"b":""}}}`
   )
   @live
   let wrapResponseConverterMap = ()
@@ -53,7 +61,7 @@ module Internal = {
   type responseRaw
   @live
   let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"createUser_id":{"b":""}}}`
+    json`{"__root":{"accounts_id":{"b":""}}}`
   )
   @live
   let responseConverterMap = ()
@@ -70,68 +78,58 @@ module Internal = {
   @live
   let convertRawResponse = convertResponse
 }
+
+type queryRef
+
 module Utils = {
   @@ocaml.warning("-33")
   open Types
   @live @obj external makeVariables: (
-    ~email: string,
-    ~name: string,
-    ~username: string,
+    ~token: string,
   ) => variables = ""
 
 
 }
 
 type relayOperationNode
-type operationType = RescriptRelay.mutationNode<relayOperationNode>
+type operationType = RescriptRelay.queryNode<relayOperationNode>
 
 
 let node: operationType = %raw(json` (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "email"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "name"
-},
-v2 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "username"
-},
-v3 = [
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "token"
+  }
+],
+v1 = [
   {
     "alias": null,
     "args": [
       {
         "kind": "Variable",
-        "name": "email",
-        "variableName": "email"
-      },
-      {
-        "kind": "Variable",
-        "name": "name",
-        "variableName": "name"
-      },
-      {
-        "kind": "Variable",
-        "name": "username",
-        "variableName": "username"
+        "name": "token",
+        "variableName": "token"
       }
     ],
-    "concreteType": "User",
+    "concreteType": "Account",
     "kind": "LinkedField",
-    "name": "createUser",
-    "plural": false,
+    "name": "accounts",
+    "plural": true,
     "selections": [
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
         "name": "id",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
         "storageKey": null
       }
     ],
@@ -140,38 +138,37 @@ v3 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/),
-      (v2/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "SignUpMutation",
-    "selections": (v3/*: any*/),
-    "type": "Mutations",
+    "name": "HomeQuery",
+    "selections": (v1/*: any*/),
+    "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v2/*: any*/),
-      (v1/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "SignUpMutation",
-    "selections": (v3/*: any*/)
+    "name": "HomeQuery",
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "72f7190fcc766bb9a2c1c7863a14bef8",
+    "cacheID": "a7a6d7e78e4a210a85cc2b1ddd17f52d",
     "id": null,
     "metadata": {},
-    "name": "SignUpMutation",
-    "operationKind": "mutation",
-    "text": "mutation SignUpMutation(\n  $email: String!\n  $username: String!\n  $name: String!\n) {\n  createUser(email: $email, username: $username, name: $name) {\n    id\n  }\n}\n"
+    "name": "HomeQuery",
+    "operationKind": "query",
+    "text": "query HomeQuery(\n  $token: String!\n) {\n  accounts(token: $token) {\n    id\n    name\n  }\n}\n"
   }
 };
 })() `)
 
-
+include RescriptRelay.MakeLoadQuery({
+    type variables = Types.variables
+    type loadedQueryRef = queryRef
+    type response = Types.response
+    type node = relayOperationNode
+    let query = node
+    let convertVariables = Internal.convertVariables
+});

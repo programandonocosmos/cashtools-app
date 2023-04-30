@@ -16,32 +16,6 @@ type enum_EarningIndex_input = [
 ]
 
 @live
-type enum_Order = private [>
-  | #ASC
-  | #DESC
-]
-
-@live
-type enum_Order_input = [
-  | #ASC
-  | #DESC
-]
-
-@live
-type enum_typ = private [>
-  | #ADD
-  | #KEEP
-  | #DELETE
-]
-
-@live
-type enum_typ_input = [
-  | #ADD
-  | #KEEP
-  | #DELETE
-]
-
-@live
 type enum_RequiredFieldAction = private [>
   | #NONE
   | #LOG
@@ -63,7 +37,7 @@ type rec input_EarningInput = {
 
 @live
 and input_NewAccount = {
-  time: int,
+  time: float,
   initialBalance: float,
   name: string,
   description: option<string>,
@@ -104,7 +78,7 @@ external make_EarningInput: (
 
 @live @obj
 external make_NewAccount: (
-  ~time: int,
+  ~time: float,
   ~initialBalance: float,
   ~name: string,
   ~description: string=?,
