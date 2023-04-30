@@ -22,12 +22,16 @@ let dict = {
     "where_money": "Where is your money?",
     "amount": "Amount",
     "accumulative": "Accumulative",
+    "no_accounts_yet": "No accounts were created yet",
+    "classified": "Classified",
+    "unclassified": "Unclassified",
+    "all": "All",
   },
   "br": {
     "login": "Login",
     "name": "Name",
     "next": "Avançar",
-    "loading": "...",
+    "loading": "Carregando dados...",
     "sign_in": "Entrar",
     "sign_up": "Cadastre=se",
     "create_an_account": "Criar uma conta",
@@ -46,6 +50,10 @@ let dict = {
     "where_money": "Onde está seu dinheiro?",
     "amount": "Quantia",
     "accumulative": "Acumulativo",
+    "no_accounts_yet": "Nenhuma conta criada até o momento",
+    "classified": "Classificado",
+    "unclassified": "Não classificado",
+    "all": "Todos",
   },
 }
 
