@@ -6,6 +6,7 @@ module.exports = {
   slug: "cashtools-app",
   extra: {
     apiUrl: process.env.BASE_URL,
+    storybookMode: process.env.STORYBOOK_MODE,
   },
   version: "1.0.0",
   orientation: "portrait",
