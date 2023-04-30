@@ -1,19 +1,3 @@
-// <Popover
-//   on="press"
-//   placement="bottom"
-//   trigger={
-//     <Button>
-//       <Text>Press me</Text>
-//     </Button>
-//   }
-
-//   shouldCloseOnOutsideClick={true}
-// >
-
-//   <Popover.Content>
-//     <Text>Hello from popover</Text>
-//   </Popover.Content>
-// </Popover>
 module Popover = {
   // Module contents
   @react.component @module("react-native-popper")
