@@ -5,7 +5,7 @@ module Mutation = %relay(`
   mutation AddAccountMutation($token: String!, $account: NewAccount!) {
     createAccount(token: $token, account: $account) {
       id
-      balance
+      name
     }
   }
 `)
@@ -15,7 +15,7 @@ let emptyPreallocated: input_PreAllocationInput = {
   amount: None,
 }
 let initialState: input_NewAccount = {
-  time: Js.Date.now()->Belt.Float.toInt,
+  time: (Js.Date.now() /. 1000.)->Js.Math.trunc,
   initialBalance: 0.0,
   name: "",
   description: None,
@@ -54,8 +54,10 @@ module Percentage = {
 
 let monthlyToAnnualRate = rate =>
   (Js.Math.pow_float(~base=1. +. rate /. 100., ~exp=12.) -. 1.) *. 100.
+
 let annualToMonthlyRate = rate =>
   (Js.Math.pow_float(~base=1. +. rate /. 100., ~exp=1. /. 12.) -. 1.) *. 100.
+
 let emptyEarn = {
   rate: 0.,
   index: #FIXED,
@@ -67,8 +69,6 @@ module Form = {
     ~account: input_NewAccount,
     ~setAccount: (input_NewAccount => input_NewAccount) => unit,
   ) => {
-    // let account = form.values.value
-    let (mutate, isMutating) = Mutation.use()
     let (dict, _) = Dict.use()
 
     let onChangeAvailability = availability =>
@@ -125,14 +125,10 @@ module Form = {
     <VStack flex="1">
       <FormControl.Label> {"Name"->s} </FormControl.Label>
       <Input
-      // bg="black"
-      // background="black"
         bgColor="muted.900" variant=#outline value={account.name} onChangeText={onChangeName}
       />
       <FormControl.Label> {"Initial Balance"->s} </FormControl.Label>
       <Input
-      // bg="black"
-      // background="black"
         bgColor="muted.900"
         variant=#outline
         keyboardType=#numberPad
@@ -151,9 +147,7 @@ module Form = {
           <FormControl.Label> {dict["amount"]->s} </FormControl.Label>
           <HStack alignItems="center">
             <Input
-            // bg="black"
               keyboardType=#numberPad
-              // background="black"
               flex="1"
               bgColor="muted.900"
               variant=#outline
@@ -174,10 +168,7 @@ module Form = {
             <VStack flex="1">
               <FormControl.Label> {"a.m."->s} </FormControl.Label>
               <Input
-              // bg="black"
                 keyboardType=#numberPad
-                // background="black"
-
                 bgColor="muted.900"
                 selection={
                   start: Percentage.getPosition(earning.rate),
@@ -191,10 +182,7 @@ module Form = {
             <VStack flex="1">
               <FormControl.Label> {"a.a."->s} </FormControl.Label>
               <Input
-              // bg="black"
                 keyboardType=#numberPad
-                // background="black"
-
                 bgColor="muted.900"
                 selection={
                   start: Percentage.getPosition(earning.rate->monthlyToAnnualRate),
@@ -218,27 +206,21 @@ let make = (~navigation, ~route as _) => {
   let (modalOpen, setModalOpen) = React.useState(() => false)
   let (account, setAccount) = React.useState(() => initialState)
   let onPressNext = _ => {
-    navigation->replace("Home")
+    navigation->push("Payday")
   }
   let (_, _, maybeUserData) = Hooks.useAuth()
-  let (listAccountsRef, loadQuery, _disposeQuery) = AccountList.Query.useLoader()
-  let (mutate, isMutating) = Mutation.use()
-  // ~variables={
-  //   token: (maybeUserData->UserDomain.getUserDataOrDefault).token,
-  //   page: 1,
-  //   isPreAllocation: false,
-  //   inTrash: false,
-  // },
+  let (listAccountsRef, loadQuery, disposeQuery) = AccountList.Query.useLoader()
+  let (sendAddAccountMutation, isMutating) = Mutation.use()
   let token = (maybeUserData->UserDomain.getUserDataOrDefault).token
-  Js.Console.log(token)
 
-  React.useEffect0(() => {
+  let refreshAccountList = () => {
     try {
+      Js.log("refreshing shit")
+      disposeQuery()
+      Js.log2("token", token)
       loadQuery(
         ~variables={
           token,
-          page: 1,
-          isPreAllocation: false,
           inTrash: false,
         },
         (),
@@ -246,57 +228,78 @@ let make = (~navigation, ~route as _) => {
     } catch {
     | _ => Js.log("error")
     }
+  }
 
+  React.useEffect0(() => {
+    refreshAccountList()
     None
   })
+
   let onPressAdd = _ => {
     setModalOpen(_ => true)
   }
   let onPressSave = _ => {
     setModalOpen(_ => false)
-    mutate(
+    Js.log(account)
+    sendAddAccountMutation(
       ~variables={account, token},
       ~onError=Js.Console.log,
-      ~onCompleted=(_, _) => (),
+      ~onCompleted=(r, _) => {
+        Js.Console.log(r)
+        // refreshAccountList()
+      },
+      ~optimisticResponse={
+        createAccount: {
+          name: account.name,
+          id: account.name,
+        },
+      },
+      ~updater=(store, _) => {
+        Js.Global.setTimeout(() => {
+          refreshAccountList()
+        }, 1)->ignore
+        store->RescriptRelay.RecordSourceSelectorProxy.invalidateStore
+      },
       (),
     )->ignore
   }
   <Box justifyContent="space-between" flex="1" padding="4">
     // {ReactNativePopper.ex}
     <Heading size=#"2xl" color="white"> {dict["where_money"]->s} </Heading>
-    <Form account setAccount />
-    <ModalC avoidKeyboard=true isOpen={modalOpen} onClose={_ => setModalOpen(_ => false)}>
-      <ModalC.Content maxWidth="400px">
-        // <ModalC.CloseButton />
-        <ModalC.Header> {"Add account"->s} </ModalC.Header>
-        <ModalC.Body>
-          <Form account setAccount />
-        </ModalC.Body>
-        <ModalC.Footer>
-          <HStack space={2}>
-            <Button
-              title=""
-              variant="ghost"
-              //   colorScheme="blueGray"
-              onPress={_ => {
-                setModalOpen(_ => false)
-              }}>
-              {"Cancel"->s}
-            </Button>
-            <Button title="" onPress={onPressSave}> {"Save"->s} </Button>
-          </HStack>
-        </ModalC.Footer>
-      </ModalC.Content>
-    </ModalC>
-    // <VStack>
-    //   <RescriptReactErrorBoundary
-    //     fallback={_ => <Typography> "Error while fetching accounts" </Typography>}>
-    //     {switch listAccountsRef {
-    //     | Some(listAccountsRef) => <AccountList queryRef=listAccountsRef />
-    //     | None => <> </>
-    //     }}
-    //   </RescriptReactErrorBoundary>
-    // </VStack>
+    <ReactNative.Modal transparent=true visible=modalOpen>
+      <Box flex="1" padding="4" alignItems="stretch" justifyContent="center">
+        <ModalC.Content>
+          <ModalC.Header> {"Add account"->s} </ModalC.Header>
+          <ModalC.Body maxH="100%">
+            <ReactNative.ScrollView>
+              <Form account setAccount />
+            </ReactNative.ScrollView>
+          </ModalC.Body>
+          <ModalC.Footer>
+            <HStack space={2}>
+              <Button
+                title=""
+                variant="ghost"
+                onPress={_ => {
+                  setModalOpen(_ => false)
+                }}>
+                {"Cancel"->s}
+              </Button>
+              <Button title="" onPress={onPressSave}> {"Save"->s} </Button>
+            </HStack>
+          </ModalC.Footer>
+        </ModalC.Content>
+      </Box>
+    </ReactNative.Modal>
+    <Box flex="1" paddingTop="2" paddingBottom="2">
+      <RescriptReactErrorBoundary
+        fallback={_ => <Typography> "Error while fetching accounts" </Typography>}>
+        {switch listAccountsRef {
+        | Some(listAccountsRef) => <AccountList queryRef=listAccountsRef />
+        | None => <> </>
+        }}
+      </RescriptReactErrorBoundary>
+    </Box>
     <HStack justifyContent="flex-end">
       <Button title="advance" onPress={onPressAdd}> {dict["add_account"]->s} </Button>
       <Button title="advance" onPress={onPressNext}>
