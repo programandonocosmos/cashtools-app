@@ -71,10 +71,8 @@ and input_UpdatedAccount = {
   inTrash: option<bool>,
 }
 @live @obj
-external make_EarningInput: (
-  ~rate: float,
-  ~index: [#CDI | #FIXED | #IPCA],
-) => input_EarningInput = ""
+external make_EarningInput: (~rate: float, ~index: [#CDI | #FIXED | #IPCA]) => input_EarningInput =
+  ""
 
 @live @obj
 external make_NewAccount: (
@@ -115,4 +113,3 @@ external make_UpdatedAccount: (
   ~inTrash: bool=?,
   unit,
 ) => input_UpdatedAccount = ""
-
