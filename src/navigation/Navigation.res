@@ -36,4 +36,3 @@ module RootStackScreen = {
       </Navigator>
     </Native.NavigationContainer>
 }
-// 

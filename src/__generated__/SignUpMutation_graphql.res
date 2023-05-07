@@ -5,9 +5,13 @@ module Types = {
   @@ocaml.warning("-30")
 
   @live
-  type rec response_createUser = {@live id: string}
+  type rec response_createUser = {
+    @live id: string,
+  }
   @live
-  type response = {createUser: response_createUser}
+  type response = {
+    createUser: response_createUser,
+  }
   @live
   type rawResponse = response
   @live
@@ -20,34 +24,45 @@ module Types = {
 
 module Internal = {
   @live
-  let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(json`{}`)
+  let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
+    json`{}`
+  )
   @live
   let variablesConverterMap = ()
   @live
-  let convertVariables = v =>
-    v->RescriptRelay.convertObj(variablesConverter, variablesConverterMap, Js.undefined)
+  let convertVariables = v => v->RescriptRelay.convertObj(
+    variablesConverter,
+    variablesConverterMap,
+    Js.undefined
+  )
   @live
   type wrapResponseRaw
   @live
-  let wrapResponseConverter: Js.Dict.t<
-    Js.Dict.t<Js.Dict.t<string>>,
-  > = %raw(json`{"__root":{"createUser_id":{"b":""}}}`)
+  let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
+    json`{"__root":{"createUser_id":{"b":""}}}`
+  )
   @live
   let wrapResponseConverterMap = ()
   @live
-  let convertWrapResponse = v =>
-    v->RescriptRelay.convertObj(wrapResponseConverter, wrapResponseConverterMap, Js.null)
+  let convertWrapResponse = v => v->RescriptRelay.convertObj(
+    wrapResponseConverter,
+    wrapResponseConverterMap,
+    Js.null
+  )
   @live
   type responseRaw
   @live
-  let responseConverter: Js.Dict.t<
-    Js.Dict.t<Js.Dict.t<string>>,
-  > = %raw(json`{"__root":{"createUser_id":{"b":""}}}`)
+  let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
+    json`{"__root":{"createUser_id":{"b":""}}}`
+  )
   @live
   let responseConverterMap = ()
   @live
-  let convertResponse = v =>
-    v->RescriptRelay.convertObj(responseConverter, responseConverterMap, Js.undefined)
+  let convertResponse = v => v->RescriptRelay.convertObj(
+    responseConverter,
+    responseConverterMap,
+    Js.undefined
+  )
   type wrapRawResponseRaw = wrapResponseRaw
   @live
   let convertWrapRawResponse = convertWrapResponse
@@ -58,12 +73,18 @@ module Internal = {
 module Utils = {
   @@ocaml.warning("-33")
   open Types
-  @live @obj
-  external makeVariables: (~email: string, ~name: string, ~username: string) => variables = ""
+  @live @obj external makeVariables: (
+    ~email: string,
+    ~name: string,
+    ~username: string,
+  ) => variables = ""
+
+
 }
 
 type relayOperationNode
 type operationType = RescriptRelay.mutationNode<relayOperationNode>
+
 
 let node: operationType = %raw(json` (function(){
 var v0 = {
@@ -152,3 +173,5 @@ return {
   }
 };
 })() `)
+
+

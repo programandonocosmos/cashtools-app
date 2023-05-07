@@ -36,6 +36,12 @@ type rec input_EarningInput = {
 }
 
 @live
+and input_EarningInput_nullable = {
+  rate: float,
+  index: [#CDI | #FIXED | #IPCA],
+}
+
+@live
 and input_NewAccount = {
   time: float,
   initialBalance: float,
@@ -43,6 +49,17 @@ and input_NewAccount = {
   description: option<string>,
   preAllocation: option<input_PreAllocationInput>,
   earning: option<input_EarningInput>,
+  isAvailable: bool,
+}
+
+@live
+and input_NewAccount_nullable = {
+  time: float,
+  initialBalance: float,
+  name: string,
+  description?: Js.Null.t<string>,
+  preAllocation?: Js.Null.t<input_PreAllocationInput_nullable>,
+  earning?: Js.Null.t<input_EarningInput_nullable>,
   isAvailable: bool,
 }
 
@@ -56,9 +73,24 @@ and input_NewTransaction = {
 }
 
 @live
+and input_NewTransaction_nullable = {
+  entryDate: string,
+  entryAccountCode?: Js.Null.t<string>,
+  exitAccountCode?: Js.Null.t<string>,
+  amount: float,
+  description?: Js.Null.t<string>,
+}
+
+@live
 and input_PreAllocationInput = {
   amount: option<float>,
   accumulative: option<bool>,
+}
+
+@live
+and input_PreAllocationInput_nullable = {
+  amount?: Js.Null.t<float>,
+  accumulative?: Js.Null.t<bool>,
 }
 
 @live
@@ -70,9 +102,21 @@ and input_UpdatedAccount = {
   isAvailable: option<bool>,
   inTrash: option<bool>,
 }
+
+@live
+and input_UpdatedAccount_nullable = {
+  name?: Js.Null.t<string>,
+  description?: Js.Null.t<string>,
+  preAllocation?: Js.Null.t<input_PreAllocationInput_nullable>,
+  earning?: Js.Null.t<input_EarningInput_nullable>,
+  isAvailable?: Js.Null.t<bool>,
+  inTrash?: Js.Null.t<bool>,
+}
 @live @obj
-external make_EarningInput: (~rate: float, ~index: [#CDI | #FIXED | #IPCA]) => input_EarningInput =
-  ""
+external make_EarningInput: (
+  ~rate: float,
+  ~index: [#CDI | #FIXED | #IPCA],
+) => input_EarningInput = ""
 
 @live @obj
 external make_NewAccount: (
@@ -113,3 +157,4 @@ external make_UpdatedAccount: (
   ~inTrash: bool=?,
   unit,
 ) => input_UpdatedAccount = ""
+
