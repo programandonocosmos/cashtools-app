@@ -34,8 +34,12 @@ let make = (
   let widthRef = React.useRef(10.)
 
   <Box
-  // zIndex="10"
-    background="muted.800" borderRadius="4px" variant="dropdown" flex alignSelf="stretch">
+    // zIndex="10"
+    background="muted.800"
+    borderRadius="4px"
+    variant="dropdown"
+    flex
+    alignSelf="stretch">
     <ReactNativePopper.Popover
       isOpen
       trigger={<ReactNative.View
