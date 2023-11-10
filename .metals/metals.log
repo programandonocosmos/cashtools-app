@@ -1,0 +1,65 @@
+2023.05.08 10:10:52 INFO  Started: Metals version 0.11.12 in workspace '/Users/davi/gits/cashtools-app' for client Visual Studio Code - Insiders 1.79.0-insider.
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.16.3 by Redgate
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/Users/davi/gits/cashtools-app/.metals/metals (H2 2.1)
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory allAppliedMigrations
+INFO: Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.005s)
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory create
+INFO: Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": << Empty Schema >>
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.command.DbMigrate doMigrateGroup
+INFO: Migrating schema "PUBLIC" to version "1 - Create tables"
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.command.DbMigrate doMigrateGroup
+INFO: Migrating schema "PUBLIC" to version "2 - Server discovery"
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.command.DbMigrate doMigrateGroup
+INFO: Migrating schema "PUBLIC" to version "3 - Jar symbols"
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.command.DbMigrate doMigrateGroup
+INFO: Migrating schema "PUBLIC" to version "4 - Fingerprints"
+May 08, 2023 10:10:52 AM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Successfully applied 4 migrations to schema "PUBLIC", now at version v4 (execution time 00:00.023s)
+2023.05.08 10:10:52 INFO  time: initialize in 0.26s
+2023.05.08 10:10:53 WARN  Build server is not auto-connectable.
+2023.05.08 10:10:53 WARN  no build tool detected in workspace '/Users/davi/gits/cashtools-app'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2023.05.08 10:10:55 WARN  no build target for: /Users/davi/gits/api-key-service/collect/server.scala
+2023.05.08 10:10:58 INFO  no build target found for /Users/davi/gits/api-key-service/collect/server.scala. Using presentation compiler with project's scala-library version: 3.2.2
+2023.05.08 10:10:59 WARN  no build target for: /Users/davi/gits/api-key-service/collect/server.scala
+May 08, 2023 10:10:59 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2023.05.08 10:11:04 WARN  no build target for: /Users/davi/gits/api-key-service/collect/server.scala
+2023.05.08 10:13:10 WARN  no build target for: /Users/davi/gits/api-key-service/collect/server.scala
+2023.05.08 10:13:14 INFO  Shutting down server
+2023.05.08 10:13:14 INFO  shutting down Metals
+2023.05.08 10:13:14 INFO  Exiting server
+2023.05.08 10:13:19 INFO  Started: Metals version 0.11.12 in workspace '/Users/davi/gits/cashtools-app' for client Visual Studio Code - Insiders 1.79.0-insider.
+May 08, 2023 10:13:19 AM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.16.3 by Redgate
+May 08, 2023 10:13:19 AM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+May 08, 2023 10:13:19 AM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+May 08, 2023 10:13:20 AM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/Users/davi/gits/cashtools-app/.metals/metals (H2 2.1)
+May 08, 2023 10:13:20 AM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.007s)
+May 08, 2023 10:13:20 AM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+May 08, 2023 10:13:20 AM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.05.08 10:13:20 INFO  time: initialize in 0.3s
+2023.05.08 10:13:21 WARN  Build server is not auto-connectable.
+2023.05.08 10:13:21 WARN  no build tool detected in workspace '/Users/davi/gits/cashtools-app'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2023.05.08 10:13:21 WARN  no build target for: /Users/davi/gits/api-key-service/collect/server.scala
+2023.05.08 10:13:22 INFO  no build target found for /Users/davi/gits/api-key-service/collect/server.scala. Using presentation compiler with project's scala-library version: 3.2.2
+2023.05.08 10:13:22 INFO  time: code lens generation in 1.8s
+2023.05.08 10:13:23 WARN  no build target for: /Users/davi/gits/api-key-service/collect/server.scala
+2023.05.08 10:21:11 INFO  Shutting down server
+2023.05.08 10:21:11 INFO  shutting down Metals
+2023.05.08 10:21:11 INFO  Exiting server
