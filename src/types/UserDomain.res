@@ -8,3 +8,9 @@ let dummyUser = {
 module Auth = {
   type states = LoggedIn(userInfo) | LoggedOut
 }
+let getUserDataOrDefault = (user: Auth.states) => {
+  switch user {
+  | LoggedIn(user) => user
+  | LoggedOut => dummyUser
+  }
+}

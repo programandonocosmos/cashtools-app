@@ -6,10 +6,15 @@ module MainStackScreen = {
   @react.component
   let make = (~navigation as _, ~route as _) => {
     let (_login, _logout, state) = Hooks.useAuth()
-
+    // let state = Auth.LoggedIn(UserDomain.dummyUser)
+    Js.Console.log(state)
     <Navigator screenOptions={_optionsProps => options(~headerShown=false, ())}>
       {switch state {
-      | Auth.LoggedIn(_) => <Screen name="Home" component=Home.make />
+      | Auth.LoggedIn(_) =>
+        <>
+          <Screen name="Home" component=Home.make />
+          <Screen name="AddAccount" component=AddAccount.make />
+        </>
       | Auth.LoggedOut =>
         <>
           <Screen name="SignUp" component=SignUp.make />

@@ -74,6 +74,10 @@ let base = {
       ]),
     },
   },
+  config: {
+    initialColorMode: #dark,
+    useSystemColorMode: false,
+  },
 }
 
 @react.component

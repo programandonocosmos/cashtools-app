@@ -9,6 +9,7 @@ let make = (
   ~placeholder="Select an option",
   ~preSelected=None,
   ~value=?,
+  ~flex="1",
 ) => {
   let (selectedState, setSelected) = React.useState(() => preSelected)
   let (isOpen, setIsOpen) = React.useState(() => false)
@@ -30,43 +31,61 @@ let make = (
     to: reanimatedStyle(~transform=[ReanimatedStyle.translateY(~translateY=-60.)], ~opacity=0., ()),
   })->duration(50.)
 
-  <Box background="muted.800" borderRadius="4px" variant="dropdown" flex="1" alignSelf="stretch">
-    <Button
-      height="50px"
-      width="100%"
-      background="muted.800"
-      justifyContent="space-between"
-      flexDirection="row"
-      variant="unstyled"
-      onPress={_ => toggle()}
-      zIndex="1"
-      title="options">
-      <Box
-        flexDirection="row"
-        flex="1"
-        minWidth="100%"
-        maxWidth="100%"
-        alignItems="center"
-        justifyContent="space-between">
-        <Typography
-          background="#000"
-          color={!Option.isSome(selected) ? "text.600" : "text.50"}
-          fontSize="20px">
-          {selected->Option.getWithDefault(placeholder)}
-        </Typography>
-        <Icon.MaterialCommunityIcons name="chevron-down" size=32 color="white" />
-      </Box>
-    </Button>
-    {isOpen
-      ? <Reanimated.View exiting={exitKeyframe} entering={fadeInUp->duration(100.)}>
+  let widthRef = React.useRef(10.)
+
+  <Box
+    // zIndex="10"
+    background="muted.800"
+    borderRadius="4px"
+    variant="dropdown"
+    flex
+    alignSelf="stretch">
+    <ReactNativePopper.Popover
+      isOpen
+      trigger={<ReactNative.View
+        onLayout={e => {
+          widthRef.current = e.nativeEvent.layout.width
+          ()
+        }}>
+        <Button
+          height="50px"
+          width="100%"
+          background="muted.800"
+          justifyContent="space-between"
+          flexDirection="row"
+          variant="unstyled"
+          onPress={_ => toggle()}
+          // zIndex="1"
+          title="options">
+          <Box
+            flexDirection="row"
+            flex="1"
+            minWidth="100%"
+            maxWidth="100%"
+            alignItems="center"
+            justifyContent="space-between">
+            <Typography
+              background="#000"
+              color={!Option.isSome(selected) ? "text.600" : "text.50"}
+              fontSize="20px">
+              {selected->Option.getWithDefault(placeholder)}
+            </Typography>
+            <Icon.MaterialCommunityIcons name="chevron-down" size=32 color="white" />
+          </Box>
+        </Button>
+      </ReactNative.View>}>
+      <ReactNativePopper.Popover.Backdrop />
+      <ReactNativePopper.Popover.Content>
+        <Reanimated.View exiting={exitKeyframe} entering={fadeInUp->duration(100.)}>
           <Box
             marginTop="4px"
             background="muted.800"
             borderRadius="4px"
-            flex="1"
-            width="100%"
+            // flex="1"
+            zIndex="10"
+            width={widthRef.current->Float.toString}
             alignSelf="stretch"
-            position="absolute"
+            // position="absolute"
             variant="dropdown__options">
             <Button
               width="100%"
@@ -104,7 +123,11 @@ let make = (
             ->React.array}
           </Box>
         </Reanimated.View>
-      : React.null}
+      </ReactNativePopper.Popover.Content>
+    </ReactNativePopper.Popover>
+    // {isOpen
+    //   ?
+    //   : React.null}
     children
   </Box>
 }

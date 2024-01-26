@@ -1,0 +1,4 @@
+Uri: untitled:<HOME>/gits/api-key-service/collect/server.scala
+
+Error message: Provider "untitled" not installed
+Error: java.nio.file.FileSystemNotFoundException: Provider "untitled" not installed

@@ -13,17 +13,25 @@ let dict = {
     "already_have_account": "Already have an account?",
     "username_length_error": "Username must be at least 3 characters long",
     "username": "Username",
+    "add_account": "Add account",
+    "account_fetch_err": "Error while fetching accounts",
     "unknown_error": "Unknown error",
-
     "invalid_code": "Invalid code",
     "invalid_route_params": "Invalid route parameters",
     "failed_to_login": "Failed to login",
+    "where_money": "Where is your money?",
+    "amount": "Amount",
+    "accumulative": "Accumulative",
+    "no_accounts_yet": "No accounts were created yet",
+    "classified": "Classified",
+    "unclassified": "Unclassified",
+    "all": "All",
   },
   "br": {
     "login": "Login",
     "name": "Name",
     "next": "Avançar",
-    "loading": "...",
+    "loading": "Carregando dados...",
     "sign_in": "Entrar",
     "sign_up": "Cadastre=se",
     "create_an_account": "Criar uma conta",
@@ -33,10 +41,19 @@ let dict = {
     "already_have_account": "Já tem uma conta?",
     "username_length_error": "O nome de usuário deve ter pelo menos 3 caracteres",
     "username": "Nome de usuário",
+    "add_account": "Adicionar conta",
+    "account_fetch_err": "Erro ao buscar contas.",
     "unknown_error": "Erro desconhecido",
     "invalid_code": "Código inválido",
     "invalid_route_params": "Parâmetros de rota inválidos",
     "failed_to_login": "Falha ao entrar",
+    "where_money": "Onde está seu dinheiro?",
+    "amount": "Quantia",
+    "accumulative": "Acumulativo",
+    "no_accounts_yet": "Nenhuma conta criada até o momento",
+    "classified": "Classificado",
+    "unclassified": "Não classificado",
+    "all": "Todos",
   },
 }
 
@@ -46,7 +63,7 @@ module Context = {
   type availableLanguages = En | Br
 
   let useLocalDict = () => {
-    let (translations, setTranslations) = React.useState(() => dict["br"])
+    let (translations, setTranslations) = React.useState(() => dict["en"])
 
     let setLanguage = lang => {
       switch lang {
@@ -58,7 +75,7 @@ module Context = {
     (translations, setLanguage)
   }
 
-  let context = createContext((dict["br"], _ => ()))
+  let context = createContext((dict["en"], _ => ()))
 
   module Provider = {
     @react.component

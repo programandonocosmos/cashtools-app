@@ -39,7 +39,7 @@ module Internal = {
   type wrapResponseRaw
   @live
   let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{}`
+    json`{"__root":{"createUser_id":{"b":""}}}`
   )
   @live
   let wrapResponseConverterMap = ()
@@ -53,7 +53,7 @@ module Internal = {
   type responseRaw
   @live
   let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{}`
+    json`{"__root":{"createUser_id":{"b":""}}}`
   )
   @live
   let responseConverterMap = ()

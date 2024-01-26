@@ -24,7 +24,8 @@
     "@rescript-react-native/async-storage",
     "@ryyppy/rescript-promise",
     "@rescript-react-native/safe-area-context",
-    "rescript-reanimated"
+    "rescript-reanimated",
+    "res-date-fns"
   ],
   "ppx-flags": ["rescript-relay/ppx"]
 }
